@@ -15,6 +15,16 @@ def loadCompetitions():
         return listOfCompetitions
 
 
+def save_clubs(clubs):
+    with open("clubs.json", "w") as f:
+        json.dump({"clubs": clubs}, f, indent=4)
+
+
+def save_competitions(competitions):
+    with open("competitions.json", "w") as f:
+        json.dump({"competitions": competitions}, f, indent=4)
+
+
 app = Flask(__name__)
 app.secret_key = "something_special"
 
@@ -27,12 +37,18 @@ def index():
     return render_template("index.html")
 
 
-@app.route("/welcome", methods=["POST"])
+@app.route("/welcome", methods=["POST", "GET"])
 def welcome():
+    email = (
+        request.args.get("email")
+        if request.method == "GET"
+        else request.form.get("email")
+    )
+
     clubs = loadClubs()
     competitions = loadCompetitions()
 
-    club = [club for club in clubs if club["email"] == request.form["email"]]
+    club = [club for club in clubs if club["email"] == email]
     if not club:
         flash("Email non autorisé !")
         return redirect(url_for("index"))
@@ -55,14 +71,46 @@ def book(competition, club):
 
 @app.route("/purchasePlaces", methods=["POST"])
 def purchasePlaces():
-    competition = [c for c in competitions if c["name"] == request.form["competition"]][
-        0
-    ]
-    club = [c for c in clubs if c["name"] == request.form["club"]][0]
-    placesRequired = int(request.form["places"])
-    competition["numberOfPlaces"] = int(competition["numberOfPlaces"]) - placesRequired
-    flash("Great-booking complete!")
-    return render_template("welcome.html", club=club, competitions=competitions)
+
+    club_name = request.form.get("club")
+    print(club_name)
+    competition_name = request.form.get("competition")
+    print(competition_name)
+    places_requested = int(request.form.get("places"))
+    print(places_requested)
+
+    clubs = loadClubs()
+    competitions = loadCompetitions()
+
+    competition = [c for c in competitions if c["name"] == request.form["competition"]]
+    club = [c for c in clubs if c["name"] == request.form["club"]]
+    placesRequired = int(places_requested)
+    comp_place = competition[0]["numberOfPlaces"]
+    competition[0]["numberOfPlaces"] = (
+        int(competition[0]["numberOfPlaces"]) - placesRequired
+    )
+    if places_requested > competition[0]["numberOfPlaces"]:
+        flash(
+            f"Pas assez de plcs : demandé({places_requested}) > dispo({comp_place}) !"
+        )
+    elif places_requested > int(club[0]["points"]):
+        flash(
+            f"Pas assez de pts({club[0]['points']}) pour les {places_requested} plcs !"
+        )
+    else:
+        # Mettre à jour les données
+        competition[0]["numberOfPlaces"] = str(
+            competition[0]["numberOfPlaces"] - places_requested
+        )
+        club[0]["points"] = str(int(club[0]["points"]) - places_requested)
+
+        save_clubs(clubs)
+        save_competitions(competitions)
+
+        flash(
+            f"Réservation réussie ! {places_requested} place(s) à {competition_name}."
+        )
+    return redirect(url_for("welcome", email=club[0]["email"]))
 
 
 # TODO: Add route for points display
