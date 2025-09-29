@@ -1,36 +1,132 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Summary | GUDLFT Registration</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Summary | GUDLFT Registration</title>
+  <style>
+    /* Reset de base */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background: #f0f4f8;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding-top: 50px;
+      min-height: 100vh;
+    }
+
+    .container {
+      background: #ffffff;
+      padding: 30px 25px;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+      width: 90%;
+      max-width: 600px;
+    }
+
+    h2 {
+      color: #2c3e50;
+      margin-bottom: 10px;
+    }
+
+    a.logout {
+      display: inline-block;
+      margin-bottom: 20px;
+      text-decoration: none;
+      color: #e74c3c;
+      font-weight: bold;
+      transition: color 0.3s;
+    }
+
+    a.logout:hover {
+      color: #c0392b;
+    }
+
+    p {
+      margin-bottom: 20px;
+      font-size: 16px;
+      color: #555555;
+    }
+
+    h3 {
+      margin-bottom: 10px;
+      color: #34495e;
+    }
+
+    ul {
+      list-style-type: none;
+    }
+
+    li.competition {
+      background: #f9fafc;
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 15px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+
+    li.competition a {
+      display: inline-block;
+      margin-top: 8px;
+      padding: 8px 12px;
+      background: #3498db;
+      color: #fff;
+      text-decoration: none;
+      border-radius: 6px;
+      transition: background 0.3s;
+    }
+
+    li.competition a:hover {
+      background: #2980b9;
+    }
+
+    ul.messages {
+      margin-bottom: 15px;
+      color: #e67e22;
+    }
+
+    ul.messages li {
+      margin-bottom: 5px;
+    }
+  </style>
 </head>
 <body>
-        <h2>Welcome, {{club['email']}} </h2><a href="{{url_for('logout')}}">Logout</a>
+  <div class="container">
+    <h2>Bienvenue, {{ club['email'] }}</h2>
+    <a href="{{ url_for('logout') }}" class="logout">Déconnexion </a>
 
-    {% with messages = get_flashed_messages()%}
-    {% if messages %}
-        <ul>
-       {% for message in messages %}
-            <li>{{message}}</li>
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul class="messages">
+        {% for message in messages %}
+          <li>{{ message }}</li>
         {% endfor %}
-       </ul>
-    {% endif%}
-    Points available: {{club['points']}}
+        </ul>
+      {% endif %}
+    {% endwith %}
+
+    <p>Points: {{ club['points'] }}</p>
+
     <h3>Competitions:</h3>
     <ul>
-        {% for comp in competitions%}
-        <li>
-            {{comp['name']}}<br />
-            Date: {{comp['date']}}</br>
-            Number of Places: {{comp['numberOfPlaces']}}
-            {%if comp['numberOfPlaces']|int >0%}
-            <a href="{{ url_for('book',competition=comp['name'],club=club['name']) }}">Book Places</a>
-            {%endif%}
-        </li>
-        <hr />
-        {% endfor %}
+      {% for comp in competitions %}
+      <li class="competition">
+        <strong>{{ comp['name'] }}</strong><br>
+        Date: {{ comp['date'] }}<br>
+        Nombre de places: {{ comp['numberOfPlaces'] }}<br>
+        {% if comp['numberOfPlaces']|int > 0 %}
+          <a href="{{ url_for('book', competition=comp['name'], club=club['name']) }}">Reservez des places</a>
+        {% endif %}
+      </li>
+      {% endfor %}
     </ul>
-    {%endwith%}
-
+  </div>
 </body>
 </html>
