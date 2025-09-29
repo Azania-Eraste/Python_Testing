@@ -27,12 +27,12 @@ def index():
     return render_template("index.html")
 
 
-@app.route("/showSummary", methods=["POST"])
-def showSummary():
+@app.route("/welcome", methods=["POST"])
+def welcome():
     clubs = loadClubs()
     competitions = loadCompetitions()
 
-    club = [club for club in clubs if club["email"] == request.form["email"]][0]
+    club = [club for club in clubs if club["email"] == request.form["email"]]
     if not club:
         flash("Email non autorisé !")
         return redirect(url_for("index"))
@@ -42,7 +42,7 @@ def showSummary():
 
 @app.route("/book/<competition>/<club>")
 def book(competition, club):
-    foundClub = [c for c in clubs if c["name"] == club][0]
+    foundClub = [c for c in clubs if c["name"] == club]
     foundCompetition = [c for c in competitions if c["name"] == competition][0]
     if foundClub and foundCompetition:
         return render_template(
