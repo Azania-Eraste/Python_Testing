@@ -36,7 +36,7 @@ def welcome():
     if not club:
         flash("Email non autorisé !")
         return redirect(url_for("index"))
-
+    print("club : ", club[0]["name"])
     return render_template("welcome.html", club=club, competitions=competitions)
 
 

@@ -99,7 +99,7 @@
 </head>
 <body>
   <div class="container">
-    <h2>Bienvenue, {{ club['email'] }}</h2>
+    <h2>Bienvenue, {{ club[0]['name'] }}</h2>
     <a href="{{ url_for('logout') }}" class="logout">Déconnexion </a>
 
     {% with messages = get_flashed_messages() %}
@@ -122,7 +122,7 @@
         Date: {{ comp['date'] }}<br>
         Nombre de places: {{ comp['numberOfPlaces'] }}<br>
         {% if comp['numberOfPlaces']|int > 0 %}
-          <a href="{{ url_for('book', competition=comp['name'], club=club['name']) }}">Reservez des places</a>
+          <a href="{{ url_for('book', competition=comp['name'], club=club[0]['name']) }}">Reservez des places</a>
         {% endif %}
       </li>
       {% endfor %}
