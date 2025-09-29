@@ -1,17 +1,107 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Booking for {{competition['name']}} || GUDLFT</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Booking for {{competition['name']}} || GUDLFT</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f4f8;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding-top: 50px;
+      min-height: 100vh;
+    }
+
+    .container {
+      background: #ffffff;
+      padding: 30px 25px;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+      width: 90%;
+      max-width: 500px;
+    }
+
+    h2 {
+      color: #2c3e50;
+      margin-bottom: 15px;
+      text-align: center;
+    }
+
+    p {
+      margin-bottom: 15px;
+      font-size: 16px;
+      color: #555555;
+      text-align: center;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    label {
+      font-weight: bold;
+      color: #34495e;
+    }
+
+    input[type="number"] {
+      padding: 10px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      width: 100%;
+      font-size: 16px;
+    }
+
+    button {
+      padding: 12px;
+      background-color: #3498db;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #2980b9;
+    }
+
+    .back-link {
+      display: block;
+      margin-top: 20px;
+      text-align: center;
+      color: #e74c3c;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .back-link:hover {
+      color: #c0392b;
+    }
+  </style>
 </head>
 <body>
+  <div class="container">
     <h2>{{competition['name']}}</h2>
-    Places available: {{competition['numberOfPlaces']}}
+    <p>Club: {{club[0]['name']}}</p>
+    <p>Places available: {{competition['numberOfPlaces']}}</p>
+
     <form action="/purchasePlaces" method="post">
-        <input type="hidden" name="club" value="{{club['name']}}">
-        <input type="hidden" name="competition" value="{{competition['name']}}">
-        <label for="places">How many places?</label><input type="number" name="places" id=""/>
-        <button type="submit">Book</button>
+      <input type="hidden" name="club" value="{{club['name']}}">
+      <input type="hidden" name="competition" value="{{competition['name']}}">
+
+      <label for="places">How many places?</label>
+      <input type="number" name="places" id="places" min="1" max="{{competition['numberOfPlaces']}}" required>
+
+      <button type="submit">Book</button>
     </form>
+
+    <a href="{{ url_for('welcome') }}" class="back-link">Back to summary</a>
+  </div>
 </body>
 </html>
