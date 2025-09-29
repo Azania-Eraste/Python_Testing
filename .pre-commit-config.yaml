@@ -1,0 +1,38 @@
+repos:
+  # Formatage Python avec Black
+  - repo: https://github.com/psf/black
+    rev: 24.8.0   # dernière version stable
+    hooks:
+      - id: black
+
+  # Organisation des imports (Flask utilise pas mal d'importations)
+  - repo: https://github.com/pycqa/isort
+    rev: 5.13.2
+    hooks:
+      - id: isort
+
+  # Vérification du code Python (PEP8, erreurs possibles)
+  - repo: https://github.com/pycqa/flake8
+    rev: 7.1.1
+    hooks:
+      - id: flake8
+        args: ["--max-line-length=88"]
+
+  # Vérification sécurité Python (injections, subprocess, etc.)
+  - repo: https://github.com/PyCQA/bandit
+    rev: 1.7.9
+    hooks:
+      - id: bandit
+        args: ["-c", "bandit.yaml"]
+        files: ^(app|server|src)/.*\.py$
+
+  # Hooks généraux
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.6.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-json
+      - id: debug-statements   # bloque les print() et pdb oubliés
+      - id: detect-private-key # empêche de commit un fichier sensible
