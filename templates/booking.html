@@ -101,7 +101,7 @@
       <button type="submit">Book</button>
     </form>
 
-    <a href="{{ url_for('welcome') }}" class="back-link">Back to summary</a>
+    <a href="{{ url_for('welcome', competitions=competition['name'], email=club[0]['email']) }}" class="back-link">Back to summary</a>
   </div>
 </body>
 </html>
