@@ -13,16 +13,16 @@
         {
             "name": "Champions league",
             "date": "2025-10-22 13:30:00",
-            "numberOfPlaces": "10"
+            "numberOfPlaces": "19"
         },
         {
             "name": "Premier league",
             "date": "2025-12-22 14:30:00",
-            "numberOfPlaces": "10"
+            "numberOfPlaces": "14"
         },{
             "name": "Aza league",
             "date": "2025-10-18 10:30:00",
-            "numberOfPlaces": "10"
+            "numberOfPlaces": "11"
         }
     ]
 }
