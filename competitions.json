@@ -9,6 +9,20 @@
             "name": "Fall Classic",
             "date": "2020-10-22 13:30:00",
             "numberOfPlaces": "13"
+        },
+        {
+            "name": "Champions league",
+            "date": "2025-10-22 13:30:00",
+            "numberOfPlaces": "10"
+        },
+        {
+            "name": "Premier league",
+            "date": "2025-12-22 14:30:00",
+            "numberOfPlaces": "10"
+        },{
+            "name": "Aza league",
+            "date": "2025-10-18 10:30:00",
+            "numberOfPlaces": "10"
         }
     ]
 }
