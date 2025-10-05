@@ -48,6 +48,11 @@
     a.logout:hover {
       color: #c0392b;
     }
+    span{
+      display: flex;
+      align-items: center;
+      margin-bottom: 8px;
+    }
 
     p {
       margin-bottom: 20px;
@@ -65,11 +70,23 @@
     }
 
     li.competition {
+      position: relative;
       background: #f9fafc;
       padding: 15px;
       border-radius: 8px;
       margin-bottom: 15px;
       box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+
+    .badge {
+      position: relative;
+      background: #e74c3c;
+      color: #fff;
+      font-size: 12px;
+      font-weight: bold;
+      padding: 4px 8px;
+      margin: 0  15px 8px 0;
+      border-radius: 4px;
     }
 
     li.competition a {
@@ -85,6 +102,12 @@
 
     li.competition a:hover {
       background: #2980b9;
+    }
+
+    li.competition a.disabled {
+      background: #bdc3c7;
+      cursor: not-allowed;
+      pointer-events: none;
     }
 
     ul.messages {
@@ -114,15 +137,23 @@
 
     <p>Points: {{ club[0]['points'] }}</p>
 
-    <h3>Competitions:</h3>
+    <h3>Compétitions :</h3>
     <ul>
       {% for comp in competitions %}
       <li class="competition">
-        <strong>{{ comp['name'] }}</strong><br>
+        <span>
+          {% if comp['past'] %}
+            <span class="badge">Terminée</span>
+          {% endif %}
+          <strong>{{ comp['name'] }}</strong><br>
+        </span>
+
         Date: {{ comp['date'] }}<br>
         Nombre de places: {{ comp['numberOfPlaces'] }}<br>
-        {% if comp['numberOfPlaces']|int > 0 %}
-          <a href="{{ url_for('book', competition=comp['name'], club=club[0]['name']) }}">Reservez des places</a>
+        {% if not comp['past'] and comp['numberOfPlaces']|int > 0 %}
+          <a href="{{ url_for('book', competition=comp['name'], club=club[0]['name']) }}">Réservez des places</a>
+        {% else %}
+          <a class="disabled">Réservation impossible</a>
         {% endif %}
       </li>
       {% endfor %}

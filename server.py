@@ -13,13 +13,19 @@ def loadClubs():
 def loadCompetitions():
     with open("competitions.json") as comps:
         liste = json.load(comps)["competitions"]
+        pastcompetitions = []
         listOfCompetitions = []
         today = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         for competition in liste:
             if competition["date"] < today:
                 competition["past"] = True
+                pastcompetitions.append(competition)
             else:
+                competition["past"] = False
                 listOfCompetitions.append(competition)
+            print(competition)
+        for comp in pastcompetitions:
+            listOfCompetitions.append(comp)
         return listOfCompetitions
 
 
