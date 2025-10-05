@@ -127,6 +127,24 @@ def purchasePlaces():
     return redirect(url_for("welcome", email=club[0]["email"]))
 
 
+@app.route("/competition/<name>")
+def competition_detail(name):
+    competitions = loadCompetitions()
+    clubs = loadClubs()
+
+    email = request.args.get("email")  # pour savoir quel club est connecté
+    club = next((c for c in clubs if c["email"] == email), None)
+
+    competition = next((c for c in competitions if c["name"] == name), None)
+    if not competition:
+        flash("Compétition introuvable !")
+        return redirect(url_for("welcome", email=email))
+
+    return render_template(
+        "competition_detail.html", competition=competition, club=club
+    )
+
+
 # TODO: Add route for points display
 
 
