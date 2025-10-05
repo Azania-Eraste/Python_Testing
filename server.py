@@ -4,6 +4,43 @@ from datetime import datetime
 from flask import Flask, flash, redirect, render_template, request, url_for
 
 
+def set_login(email, filepath="clubs.json"):
+    # Charger le fichier JSON
+    with open(filepath, "r") as f:
+        data = json.load(f)
+
+    clubs = data.get("clubs", [])
+
+    club_found = None
+
+    for club in clubs:
+        if club.get("email") == email:
+            club["loggin"] = True
+            club_found = club
+        else:
+            club["loggin"] = False  # tous les autres sont à False
+
+    # Sauvegarder les modifications dans le fichier
+    with open(filepath, "w") as f:
+        json.dump(data, f, indent=4)
+
+    return club_found
+
+
+def get_logged_in_club(filepath="clubs.json"):
+    # Charger le fichier JSON
+    with open(filepath, "r") as f:
+        data = json.load(f)
+
+    clubs = data.get("clubs", [])
+
+    for club in clubs:
+        if club.get("loggin") is True:
+            return club  # Retourne le club connecté
+
+    return None  # Si aucun club n'est connecté
+
+
 def loadClubs():
     with open("clubs.json") as c:
         listOfClubs = json.load(c)["clubs"]
@@ -67,6 +104,7 @@ def welcome():
         flash("Email non autorisé !")
         return redirect(url_for("index"))
     print("club : ", club[0]["name"])
+    set_login(email)
     return render_template("welcome.html", club=club, competitions=competitions)
 
 
@@ -130,15 +168,17 @@ def purchasePlaces():
 @app.route("/competition/<name>")
 def competition_detail(name):
     competitions = loadCompetitions()
-    clubs = loadClubs()
 
-    email = request.args.get("email")  # pour savoir quel club est connecté
-    club = next((c for c in clubs if c["email"] == email), None)
+    club = get_logged_in_club()
+    if not club:
+        flash("Vous devez être connecté pour voir les détails de la compétition.")
+        return redirect(url_for("index"))
+    print("club : ", club)
 
     competition = next((c for c in competitions if c["name"] == name), None)
     if not competition:
         flash("Compétition introuvable !")
-        return redirect(url_for("welcome", email=email))
+        return redirect(url_for("welcome", email=club["email"] if club else ""))
 
     return render_template(
         "competition_detail.html", competition=competition, club=club
