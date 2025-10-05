@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Détail de la compétition | GUDLFT</title>
+  <style>
+    body {
+      background: #f0f4f8;
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 40px;
+      min-height: 100vh;
+    }
+
+    .card {
+      background: #ffffff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+      width: 100%;
+      max-width: 600px;
+      position: relative;
+    }
+
+    h2 {
+      color: #2c3e50;
+      margin-bottom: 15px;
+    }
+
+    .badge {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: #e74c3c;
+      color: #fff;
+      font-size: 12px;
+      font-weight: bold;
+      padding: 6px 10px;
+      border-radius: 4px;
+    }
+
+    p {
+      font-size: 16px;
+      color: #555;
+      margin-bottom: 12px;
+    }
+
+    a.btn {
+      display: inline-block;
+      margin-top: 15px;
+      padding: 10px 18px;
+      background: #3498db;
+      color: #fff;
+      text-decoration: none;
+      border-radius: 6px;
+      transition: background 0.3s;
+    }
+
+    a.btn:hover {
+      background: #2980b9;
+    }
+
+    a.btn.disabled {
+      background: #bdc3c7;
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+
+    a.back {
+      display: inline-block;
+      margin-top: 25px;
+      font-size: 14px;
+      text-decoration: none;
+      color: #34495e;
+    }
+
+    a.back:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h2>{{ competition['name'] }}</h2>
+
+    {% if competition['past'] %}
+      <span class="badge">Terminée</span>
+    {% endif %}
+
+    <p><strong>Date :</strong> {{ competition['date'] }}</p>
+    <p><strong>Nombre de places restantes :</strong> {{ competition['numberOfPlaces'] }}</p>
+
+    {% if not competition['past'] and competition['numberOfPlaces']|int > 0 %}
+      <a href="{{ url_for('book', competition=competition['name'], club=club['name']) }}" class="btn">Réserver</a>
+    {% else %}
+      <a class="btn disabled">Réservation impossible</a>
+    {% endif %}
+
+    <br>
+    <a href="{{ url_for('welcome', email=club['email']) }}" class="back">← Retour à la liste</a>
+  </div>
+</body>
+</html>
