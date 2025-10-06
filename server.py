@@ -123,46 +123,46 @@ def book(competition, club):
 
 @app.route("/purchasePlaces", methods=["POST"])
 def purchasePlaces():
-
     club_name = request.form.get("club")
-    print(club_name)
-    competition_name = request.form.get("competition")
-    print(competition_name)
+    comp_name = request.form.get("competition")
     places_requested = int(request.form.get("places"))
-    print(places_requested)
 
     clubs = loadClubs()
     competitions = loadCompetitions()
 
-    competition = [c for c in competitions if c["name"] == request.form["competition"]]
-    club = [c for c in clubs if c["name"] == request.form["club"]]
-    placesRequired = int(places_requested)
-    comp_place = competition[0]["numberOfPlaces"]
-    competition[0]["numberOfPlaces"] = (
-        int(competition[0]["numberOfPlaces"]) - placesRequired
-    )
+    # Récupérer le club et la compétition
+    club = next((c for c in clubs if c["name"] == club_name), None)
+    competition = next((c for c in competitions if c["name"] == comp_name), None)
+
+    if not club or not competition:
+        flash("Erreur : Club ou compétition introuvable.")
+        return redirect(url_for("index"))
+
+    available_places = int(competition[0]["numberOfPlaces"])
+    club_points = int(club[0]["points"])
+
+    # Vérifications Phase 1
     if places_requested > competition[0]["numberOfPlaces"]:
         flash(
-            f"Pas assez de plcs : demandé({places_requested}) > dispo({comp_place}) !"
+            f"places : demandées({places_requested}) > disponibles({available_places})!"
         )
     elif places_requested > int(club[0]["points"]):
         flash(
             f"Pas assez de pts({club[0]['points']}) pour les {places_requested} plcs !"
         )
+    elif places_requested > 12:
+        flash("Vous ne pouvez pas réserver plus de 12 places par compétition.")
     else:
-        # Mettre à jour les données
-        competition[0]["numberOfPlaces"] = str(
-            competition[0]["numberOfPlaces"] - places_requested
-        )
-        club[0]["points"] = str(int(club[0]["points"]) - places_requested)
+        # Mise à jour des données
+        competition[0]["numberOfPlaces"] = str(available_places - places_requested)
+        club[0]["points"] = str(club_points - places_requested)
 
         save_clubs(clubs)
         save_competitions(competitions)
 
-        flash(
-            f"Réservation réussie ! {places_requested} place(s) à {competition_name}."
-        )
-    return redirect(url_for("welcome", email=club[0]["email"]))
+        flash(f"✅ Réservation réussie : {places_requested} place(s) pour {comp_name}.")
+
+    return redirect(url_for("welcome", email=club["email"]))
 
 
 @app.route("/competition/<name>")
