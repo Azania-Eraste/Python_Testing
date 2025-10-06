@@ -108,6 +108,12 @@ def welcome():
     return render_template("welcome.html", club=club, competitions=competitions)
 
 
+@app.route("/club")
+def club():
+    clubs = loadClubs()
+    return render_template("club.html", clubs=clubs)
+
+
 @app.route("/book/<competition>/<club>")
 def book(competition, club):
     foundClub = [c for c in clubs if c["name"] == club]
