@@ -148,24 +148,22 @@ def purchasePlaces():
         flash("Erreur : Club ou compétition introuvable.")
         return redirect(url_for("index"))
 
-    available_places = int(competition[0]["numberOfPlaces"])
-    club_points = int(club[0]["points"])
+    available_places = int(competition["numberOfPlaces"])
+    club_points = int(club["points"])
 
     # Vérifications Phase 1
-    if places_requested > competition[0]["numberOfPlaces"]:
+    if places_requested > competition["numberOfPlaces"]:
         flash(
             f"places : demandées({places_requested}) > disponibles({available_places})!"
         )
-    elif places_requested > int(club[0]["points"]):
-        flash(
-            f"Pas assez de pts({club[0]['points']}) pour les {places_requested} plcs !"
-        )
+    elif places_requested > int(club["points"]):
+        flash(f"Pas assez de pts({club['points']}) pour les {places_requested} plcs !")
     elif places_requested > 12:
         flash("Vous ne pouvez pas réserver plus de 12 places par compétition.")
     else:
         # Mise à jour des données
-        competition[0]["numberOfPlaces"] = str(available_places - places_requested)
-        club[0]["points"] = str(club_points - places_requested)
+        competition["numberOfPlaces"] = str(available_places - places_requested)
+        club["points"] = str(club_points - places_requested)
 
         save_clubs(clubs)
         save_competitions(competitions)
