@@ -1,28 +1,34 @@
 {
     "competitions": [
         {
-            "name": "Spring Festival",
-            "date": "2020-03-27 10:00:00",
-            "numberOfPlaces": "11"
-        },
-        {
-            "name": "Fall Classic",
-            "date": "2020-10-22 13:30:00",
-            "numberOfPlaces": "13"
-        },
-        {
             "name": "Champions league",
             "date": "2025-10-22 13:30:00",
-            "numberOfPlaces": "19"
+            "numberOfPlaces": "14",
+            "past": false
         },
         {
             "name": "Premier league",
             "date": "2025-12-22 14:30:00",
-            "numberOfPlaces": "14"
-        },{
+            "numberOfPlaces": "14",
+            "past": false
+        },
+        {
             "name": "Aza league",
             "date": "2025-10-18 10:30:00",
-            "numberOfPlaces": "11"
+            "numberOfPlaces": "11",
+            "past": false
+        },
+        {
+            "name": "Spring Festival",
+            "date": "2020-03-27 10:00:00",
+            "numberOfPlaces": "11",
+            "past": true
+        },
+        {
+            "name": "Fall Classic",
+            "date": "2020-10-22 13:30:00",
+            "numberOfPlaces": "13",
+            "past": true
         }
     ]
 }
