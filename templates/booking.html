@@ -1,39 +1,46 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Booking for {{competition['name']}} || GUDLFT</title>
   <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
     body {
-      font-family: Arial, sans-serif;
-      background: #f0f4f8;
+      background: linear-gradient(135deg, #f0f4f8, #e8f1f9);
       display: flex;
       justify-content: center;
       align-items: flex-start;
-      padding-top: 50px;
+      padding: 40px 15px;
       min-height: 100vh;
     }
 
     .container {
       background: #ffffff;
       padding: 30px 25px;
-      border-radius: 12px;
+      border-radius: 14px;
       box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-      width: 90%;
+      width: 100%;
       max-width: 500px;
     }
 
     h2 {
       color: #2c3e50;
-      margin-bottom: 15px;
+      margin-bottom: 10px;
       text-align: center;
+      font-size: 22px;
     }
 
     p {
-      margin-bottom: 15px;
-      font-size: 16px;
-      color: #555555;
+      margin-bottom: 8px;
+      font-size: 15px;
+      color: #555;
       text-align: center;
     }
 
@@ -41,19 +48,29 @@
       display: flex;
       flex-direction: column;
       gap: 15px;
+      margin-top: 15px;
     }
 
     label {
       font-weight: bold;
       color: #34495e;
+      margin-bottom: 5px;
+      display: block;
     }
 
     input[type="number"] {
-      padding: 10px;
-      border-radius: 6px;
+      padding: 12px;
+      border-radius: 8px;
       border: 1px solid #ccc;
       width: 100%;
       font-size: 16px;
+      transition: border 0.3s, box-shadow 0.3s;
+    }
+
+    input[type="number"]:focus {
+      border-color: #3498db;
+      box-shadow: 0 0 6px rgba(52, 152, 219, 0.3);
+      outline: none;
     }
 
     button {
@@ -63,6 +80,7 @@
       border: none;
       border-radius: 8px;
       font-size: 16px;
+      font-weight: bold;
       cursor: pointer;
       transition: background-color 0.3s;
     }
@@ -78,30 +96,50 @@
       color: #e74c3c;
       text-decoration: none;
       font-weight: bold;
+      transition: color 0.3s;
     }
 
     .back-link:hover {
       color: #c0392b;
     }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+      .container {
+        padding: 20px;
+      }
+
+      h2 {
+        font-size: 20px;
+      }
+
+      input[type="number"] {
+        font-size: 15px;
+      }
+
+      button {
+        font-size: 15px;
+      }
+    }
   </style>
 </head>
 <body>
   <div class="container">
-    <h2>{{competition['name']}}</h2>
-    <p>Club: {{club[0]['name']}}</p>
-    <p>Places available: {{competition['numberOfPlaces']}}</p>
+    <h2>Réservation – {{competition['name']}}</h2>
+    <p>Club : <strong>{{club[0]['name']}}</strong></p>
+    <p>Places disponibles : <strong>{{competition['numberOfPlaces']}}</strong></p>
 
     <form action="/purchasePlaces" method="post">
-      <input type="hidden" name="club" value="{{club['name']}}">
+      <input type="hidden" name="club" value="{{club[0]['name']}}">
       <input type="hidden" name="competition" value="{{competition['name']}}">
 
-      <label for="places">How many places?</label>
+      <label for="places">Nombre de places à réserver :</label>
       <input type="number" name="places" id="places" min="1" max="{{competition['numberOfPlaces']}}" required>
 
-      <button type="submit">Book</button>
+      <button type="submit">Confirmer la réservation</button>
     </form>
 
-    <a href="{{ url_for('welcome', competitions=competition['name'], email=club[0]['email']) }}" class="back-link">Back to summary</a>
+    <a href="{{ url_for('welcome', email=club[0]['email']) }}" class="back-link">⬅ Retour au résumé</a>
   </div>
 </body>
 </html>

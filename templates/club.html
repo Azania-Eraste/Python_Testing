@@ -1,73 +1,138 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <title>Liste des Clubs</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 40px;
-            background-color: #f5f5f5;
-        }
-        table {
-            width: 60%;
-            margin: auto;
-            border-collapse: collapse;
-            background-color: #fff;
-            box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
-        }
-        th, td {
-            padding: 12px;
-            border-bottom: 1px solid #ddd;
-            text-align: left;
-        }
-        th {
-            background-color: #4CAF50;
-            color: white;
-        }
-        tr:hover {
-            background-color: #f1f1f1;
-        }
-        h1 {
-            text-align: center;
-            color: #333;
-        }
-        .back-button {
-            display: block;
-            width: 150px;
-            margin: 0 auto 20px auto;
-            padding: 10px;
-            text-align: center;
-            background-color: #3498db;
-            color: white;
-            text-decoration: none;
-            border-radius: 6px;
-            transition: background 0.3s;
-        }
-        .back-button:hover {
-            background-color: #2980b9;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <title>Liste des Clubs | GUDLFT</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #f0f4f8, #e8f1f9);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+      padding: 40px 15px;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #2c3e50;
+      font-size: 26px;
+    }
+
+    .back-button {
+      display: inline-block;
+      margin-bottom: 20px;
+      padding: 10px 18px;
+      background-color: #3498db;
+      color: white;
+      text-decoration: none;
+      border-radius: 6px;
+      font-weight: bold;
+      transition: background 0.3s;
+    }
+
+    .back-button:hover {
+      background-color: #2980b9;
+    }
+
+    table {
+      width: 100%;
+      max-width: 700px;
+      border-collapse: collapse;
+      background-color: #fff;
+      box-shadow: 0px 5px 15px rgba(0,0,0,0.08);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    th, td {
+      padding: 14px;
+      border-bottom: 1px solid #eee;
+      text-align: left;
+      font-size: 15px;
+    }
+
+    th {
+      background-color: #3498db;
+      color: white;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    tr:nth-child(even) {
+      background-color: #f9f9f9;
+    }
+
+    tr:hover {
+      background-color: #ecf6fd;
+    }
+
+    /* Responsive: tableau → cartes sur mobile */
+    @media (max-width: 600px) {
+      table, thead, tbody, th, td, tr {
+        display: block;
+      }
+
+      thead {
+        display: none;
+      }
+
+      tr {
+        background: #fff;
+        margin-bottom: 15px;
+        border-radius: 10px;
+        box-shadow: 0px 3px 8px rgba(0,0,0,0.08);
+        padding: 12px;
+      }
+
+      td {
+        border: none;
+        padding: 8px 10px;
+        display: flex;
+        justify-content: space-between;
+        font-size: 15px;
+      }
+
+      td::before {
+        content: attr(data-label);
+        font-weight: bold;
+        color: #34495e;
+      }
+    }
+  </style>
 </head>
 <body>
-    <h1>Liste des Clubs et Points</h1>
+  <h1>Liste des Clubs et Points</h1>
 
-    <!-- Bouton de retour vers la page welcome avec l'email du club -->
-    {% if clubs|length > 0 %}
-      <a href="{{ url_for('welcome', email=club['email']) }}" class="back-button">← Retour</a>
-    {% endif %}
+  {% if clubs|length > 0 %}
+    <a href="{{ url_for('welcome', email=club['email']) }}" class="back-button">← Retour</a>
+  {% endif %}
 
-    <table>
-        <tr>
-            <th>Nom du Club</th>
-            <th>Points</th>
-        </tr>
-        {% for club in clubs %}
-        <tr>
-            <td>{{ club['name'] }}</td>
-            <td>{{ club['points'] }}</td>
-        </tr>
-        {% endfor %}
-    </table>
+  <table>
+    <thead>
+      <tr>
+        <th>Nom du Club</th>
+        <th>Points</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for club in clubs %}
+      <tr>
+        <td data-label="Nom du Club">{{ club['name'] }}</td>
+        <td data-label="Points">{{ club['points'] }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
 </body>
 </html>
