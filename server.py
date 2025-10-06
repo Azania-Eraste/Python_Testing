@@ -133,12 +133,13 @@ def book(competition, club):
 
 @app.route("/purchasePlaces", methods=["POST"])
 def purchasePlaces():
-    club_name = request.form.get("club")
+    club_name = get_logged_in_club()["name"]
     comp_name = request.form.get("competition")
     places_requested = int(request.form.get("places"))
 
     clubs = loadClubs()
     competitions = loadCompetitions()
+    print(f"club: {club_name} | competition: {comp_name} | places: {places_requested}")
 
     # Récupérer le club et la compétition
     club = next((c for c in clubs if c["name"] == club_name), None)
@@ -152,7 +153,7 @@ def purchasePlaces():
     club_points = int(club["points"])
 
     # Vérifications Phase 1
-    if places_requested > competition["numberOfPlaces"]:
+    if places_requested > available_places:
         flash(
             f"places : demandées({places_requested}) > disponibles({available_places})!"
         )
@@ -169,6 +170,9 @@ def purchasePlaces():
         save_competitions(competitions)
 
         flash(f"✅ Réservation réussie : {places_requested} place(s) pour {comp_name}.")
+
+        print(club)
+        print(competition)
 
     return redirect(url_for("welcome", email=club["email"]))
 

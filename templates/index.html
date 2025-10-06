@@ -19,6 +19,7 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
+            flex-direction: column;
         }
 
         .container {
@@ -71,6 +72,25 @@
         button:hover {
             background: #2980b9;
         }
+        table {
+            width: 60%;
+            margin: auto;
+            border-collapse: collapse;
+            background-color: #fff;
+            box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+        }
+        th, td {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+            text-align: left;
+        }
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+        tr:hover {
+            background-color: #f1f1f1;
+        }
     </style>
 </head>
 <body>
@@ -81,6 +101,24 @@
             <input type="email" name="email" id="email" placeholder="Enter your email" required/>
             <button type="submit">Enter</button>
         </form>
+
+
     </div>
+    <br>
+    <div class="container">
+        <table>
+        <tr>
+            <th>Nom du Club</th>
+            <th>Points</th>
+        </tr>
+        {% for club in clubs %}
+        <tr>
+            <td>{{ club['name'] }}</td>
+            <td>{{ club['points'] }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    </div>
+
 </body>
 </html>
