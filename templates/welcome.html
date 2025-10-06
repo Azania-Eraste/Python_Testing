@@ -145,6 +145,8 @@
   <div class="container">
     <h2>Bienvenue, {{ club[0]['name'] }}</h2>
     <a href="{{ url_for('logout') }}" class="logout">Déconnexion </a>
+    <a href="{{ url_for('club') }}" class="logout" style="color:#2980b9; margin-right:15px;">Voir tous les clubs</a>
+
 
     {% with messages = get_flashed_messages() %}
       {% if messages %}

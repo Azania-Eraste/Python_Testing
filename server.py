@@ -111,7 +111,11 @@ def welcome():
 @app.route("/club")
 def club():
     clubs = loadClubs()
-    return render_template("club.html", clubs=clubs)
+    club = get_logged_in_club()
+    if not club:
+        flash("Vous devez être connecté pour voir les clubs.")
+        return redirect(url_for("index"))
+    return render_template("club.html", clubs=clubs, club=club)
 
 
 @app.route("/book/<competition>/<club>")

@@ -32,10 +32,31 @@
             text-align: center;
             color: #333;
         }
+        .back-button {
+            display: block;
+            width: 150px;
+            margin: 0 auto 20px auto;
+            padding: 10px;
+            text-align: center;
+            background-color: #3498db;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            transition: background 0.3s;
+        }
+        .back-button:hover {
+            background-color: #2980b9;
+        }
     </style>
 </head>
 <body>
     <h1>Liste des Clubs et Points</h1>
+
+    <!-- Bouton de retour vers la page welcome avec l'email du club -->
+    {% if clubs|length > 0 %}
+      <a href="{{ url_for('welcome', email=club['email']) }}" class="back-button">← Retour</a>
+    {% endif %}
+
     <table>
         <tr>
             <th>Nom du Club</th>
