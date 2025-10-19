@@ -3,20 +3,8 @@
         {
             "name": "Simply Lift",
             "email": "john@simplylift.co",
-            "points": "13",
-            "loggin": false
-        },
-        {
-            "name": "Iron Temple",
-            "email": "admin@irontemple.com",
-            "points": "6",
+            "points": "15",
             "loggin": true
-        },
-        {
-            "name": "She Lifts",
-            "email": "kate@shelifts.co.uk",
-            "points": "12",
-            "loggin": false
         }
     ]
 }
